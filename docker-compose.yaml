@@ -1,0 +1,49 @@
+version: "3"
+services:
+  onos:
+    image: onosproject/onos:2.2-latest
+    container_name: onos
+    privileged: true
+    env_file:
+      - .env
+    environment:
+      - ONOS_APPS=drivers,fpm
+    networks:
+      - mgmt
+    ports:
+      - "2620:2620"
+      - "6653:6653"
+      - "8101:8101"
+      - "8181:8181"
+      - "9876:9876"
+    tty: true
+    stdin_open: true
+
+  start_onos:
+    image: stefanevinance/wait-for-200
+    depends_on:
+      - onos
+    env_file:
+      - .env
+    networks:
+      - mgmt
+
+  frr:
+    image: frrouting/frr-debian:latest
+    container_name: frr
+    privileged: true
+    volumes:
+      - "./volume/frr/daemons:/etc/frr/daemons"
+      - "./volume/frr/frr.conf:/etc/frr/frr.conf"
+    depends_on:
+      - start_onos
+    env_file:
+      - .env
+    networks:
+      - mgmt
+    tty: true
+    stdin_open: true
+
+networks:
+  mgmt:
+    driver: "bridge"

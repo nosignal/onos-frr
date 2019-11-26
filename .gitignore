@@ -1,0 +1,4 @@
+.env
+pipework
+volume/frr/*
+!volume/frr/*.sample

@@ -1,0 +1,14 @@
+frr version 7.2
+frr defaults traditional
+hostname onos-frr
+log syslog informational
+fpm connection ip [onos_ip] port 2620
+no ipv6 forwarding
+service integrated-vtysh-config
+!
+router bgp [BGP_AS_NUMBER]
+ bgp router-id [FRR_IP]
+ neighbor [REMOTE_BGP_NEIGHBOR_IP] remote-as [REMOTE_AS_NUMBER]
+!
+line vty
+!
