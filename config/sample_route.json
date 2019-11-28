@@ -1,0 +1,5 @@
+{
+  "source": "STATIC",
+  "prefix": "10.10.0.0/24",
+  "nextHop": "10.0.0.2"
+}

@@ -1,4 +1,4 @@
-.PHONY: start clean onos frr
+.PHONY: start clean onos frr route
 include .env
 
 ALL: 	download env_check start
@@ -60,3 +60,18 @@ onos:
 
 frr:
 	@docker exec -it frr vtysh
+
+route:
+	@echo "\033[32m-----------------------\033[0m"
+	@echo "\033[32m Pushing sample routes \033[0m"
+	@echo "\033[32m-----------------------\033[0m"
+	@curl -u onos:rocks -X POST \
+		--header 'Content-Type: application/json' \
+		--header 'Accept: application/json' \
+		-d@$(CONF_DIR)/nexthop_host.json \
+		'http://localhost:8181/onos/v1/hosts'
+	@curl -u onos:rocks -X POST \
+		--header 'Content-Type: application/json' \
+		--header 'Accept: application/json' \
+		-d@$(CONF_DIR)/sample_route.json \
+		'http://localhost:8181/onos/routeservice/routes'

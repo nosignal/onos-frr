@@ -1,0 +1,13 @@
+{
+  "mac": "00:00:DE:AD:BE:EF",
+  "vlan": "-1",
+  "ipAddresses": [
+    "10.0.0.2"
+  ],
+  "locations": [
+    {
+      "elementId": "of:0000000000000001",
+      "port": "1"
+    }
+  ]
+}

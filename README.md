@@ -35,6 +35,11 @@ Please make sure your user be able to run the docker command or use `sudo` for t
     make frr
     ```
 
+- Pushing sample static route to ONOS
+    ```
+    make route
+    ```
+
 - Tear down the enviroment
     ```
     make clean
