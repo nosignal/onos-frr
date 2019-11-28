@@ -1,17 +1,28 @@
 .PHONY: start clean onos frr
 include .env
 
-ALL: 	download start
+ALL: 	download env_check start
 
 download:
 	@echo "\033[32m-----------------------\033[0m"
 	@echo "\033[32m Downloading pipework  \033[0m"
 	@echo "\033[32m-----------------------\033[0m"
 ifneq ("$(wildcard ./pipework)","")
-	@echo "\033[32m Pipework already exist! \033[0m"
+	@echo "Pipework already exist!"
 else
 	@wget https://raw.githubusercontent.com/jpetazzo/pipework/master/pipework
 	@chmod +x pipework
+endif
+
+env_check:
+	@echo "\033[32m-----------------------\033[0m"
+	@echo "\033[32m Checking config file  \033[0m"
+	@echo "\033[32m-----------------------\033[0m"
+ifeq ("$(wildcard ./volume/frr/daemons)","")
+$(error Config file daemons not found!)
+endif
+ifeq ("$(wildcard ./volume/frr/frr.conf)","")
+$(error Config file frr.conf not found!)
 endif
 
 start:
@@ -26,7 +37,15 @@ start:
 	@echo "\033[32m-----------------------\033[0m"
 	@echo "\033[32m Pipe interface to frr \033[0m"
 	@echo "\033[32m-----------------------\033[0m"
+ifndef PIPE_INTF
+	@echo "Param PIPE_INTF is not set"
+	@echo "Skipping pipework!"
+else ifndef PIPE_IP
+	@echo "Param PIPE_IP is not set"
+	@echo "Skipping pipework!"
+else
 	@sudo ./pipework $(PIPE_INTF) -i eth1 frr $(PIPE_IP)
+endif
 
 clean:
 	@echo "\033[32m-----------------------\033[0m"
